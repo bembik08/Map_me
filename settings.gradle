@@ -1,16 +1,5 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "Map_me"
+rootProject.name = "Map_Me"
 include ':app'
+include ':domain'
+include ':data'
+include ':ui'
