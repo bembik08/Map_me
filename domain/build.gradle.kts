@@ -11,6 +11,7 @@ android {
         minSdk = 27
         targetSdk = 31
     }
+    buildToolsVersion = "31.0.0"
 }
 dependencies {
 
@@ -28,7 +29,6 @@ dependencies {
 
     //Gson
     implementation(Retrofit2.CONVERTER_JSON)
-
 
     // Coroutines
     implementation(Coroutines.ANDROID)

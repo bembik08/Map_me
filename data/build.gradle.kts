@@ -11,6 +11,7 @@ android {
         minSdk = 27
         targetSdk = 31
     }
+    buildToolsVersion = "31.0.0"
 }
 
 dependencies {
@@ -20,7 +21,6 @@ dependencies {
     // Kotlin
     implementation(Kotlin.CORE)
     implementation(Kotlin.STDLIB)
-
 
     //GoogleMap
     implementation(GoogleMaps.googleMap)

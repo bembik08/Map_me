@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -37,6 +38,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    buildToolsVersion = "31.0.0"
 }
 
 dependencies {
@@ -52,6 +54,9 @@ dependencies {
     /**ViewBinding Delegate**/
     implementation(ViewBindingDelegate.DELEGATE)
 
+    /**Google Map**/
+    implementation(GoogleMaps.googleMap)
+
     implementation(Kotlin.CORE)
     implementation(Design.APPCOMPAT)
     implementation(Design.MATERIAL)
@@ -61,4 +66,7 @@ dependencies {
     testImplementation(Tests.JUNIT)
     androidTestImplementation(Tests.TEST_EXT_JUNIT)
     androidTestImplementation(Tests.ESPRESSO)
+}
+secrets {
+    defaultPropertiesFileName = "local.properties.defaults"
 }
