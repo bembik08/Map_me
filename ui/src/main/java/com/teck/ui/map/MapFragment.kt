@@ -14,12 +14,12 @@ import com.teck.ui.R
 import com.teck.ui.databinding.FragmentMapBinding
 import com.teck.ui.map.libs.Map
 import com.teck.ui.map.libs.MapImpl
+import com.teck.ui.map.libs.ViewListener
 import com.teck.ui.map.libs.adapters.InfoMarkerGoogleAdapter
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
 
-
-class MapFragment : Fragment(R.layout.fragment_map) {
+class MapFragment : Fragment(R.layout.fragment_map), ViewListener {
     private val viewBinding: FragmentMapBinding by viewBinding()
     private val scope = getKoin().createScope<MapFragment>()
     private val viewModel: MapViewModel = scope.get()
@@ -27,7 +27,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         InfoMarkerGoogleAdapter(this.requireContext())
     }
     private val map: Map by lazy {
-        MapImpl(childFragmentManager, infoMarkerGoogleAdapter)
+        MapImpl(childFragmentManager, infoMarkerGoogleAdapter, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,6 +68,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
     }
 
+    override fun saveData(place: Place) {
+        viewModel.saveData(place)
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
