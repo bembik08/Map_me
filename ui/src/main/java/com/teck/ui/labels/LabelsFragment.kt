@@ -12,6 +12,7 @@ import com.teck.ui.databinding.FragmentLabelsBinding
 class LabelsFragment : Fragment(R.layout.fragment_labels) {
     private val viewBinding: FragmentLabelsBinding by viewBinding()
 
+
     companion object {
         fun newInstance() = LabelsFragment()
     }

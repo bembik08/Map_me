@@ -12,6 +12,9 @@
         <entry key="..\:/AndroidStudioProjects/Map_me/app/src/main/res/layout/nav_header.xml" value="0.10989583333333333" />
         <entry key="..\:/AndroidStudioProjects/Map_me/app/src/main/res/menu/main_drawer_menu.xml" value="0.10989583333333333" />
         <entry key="..\:/AndroidStudioProjects/Map_me/app/src/main/res/menu/main_menu.xml" value="0.10989583333333333" />
+        <entry key="..\:/AndroidStudioProjects/Map_me/ui/src/main/res/layout/fragment_labels.xml" value="0.10989583333333333" />
+        <entry key="..\:/AndroidStudioProjects/Map_me/ui/src/main/res/layout/fragment_map.xml" value="0.10989583333333333" />
+        <entry key="..\:/AndroidStudioProjects/Map_me/ui/src/main/res/layout/marker_info_layout.xml" value="0.10989583333333333" />
       </map>
     </option>
   </component>
