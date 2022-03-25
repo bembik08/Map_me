@@ -6,23 +6,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.gms.maps.GoogleMap
 import com.teck.domain.models.Place
 import com.teck.ui.R
 import com.teck.ui.databinding.FragmentMapBinding
-import com.teck.ui.map.adapters.InfoMarkerGoogleAdapter
 import com.teck.ui.map.libs.Map
 import com.teck.ui.map.libs.MapImpl
+import com.teck.ui.map.libs.adapters.InfoMarkerGoogleAdapter
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
+
 
 class MapFragment : Fragment(R.layout.fragment_map) {
     private val viewBinding: FragmentMapBinding by viewBinding()
     private val scope = getKoin().createScope<MapFragment>()
     private val viewModel: MapViewModel = scope.get()
-    private val placesData: List<Place> by lazy {
-        viewModel.getData()
-    }
     private val infoMarkerGoogleAdapter: GoogleMap.InfoWindowAdapter by lazy {
         InfoMarkerGoogleAdapter(this.requireContext())
     }
@@ -31,10 +31,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initViewModel()
+    }
+
+    private fun initViewModel() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.takeData().collect {
+                showData(it)
+            }
+        }
+    }
+
+    private fun showData(places: List<Place>) {
         map.initUiSettings(R.id.google_map)
-        map.addMarkers(placesData)
+        map.addMarkers(places)
         initPermissions()
-        map.initListeners(placesData)
+        map.initListeners(places)
     }
 
     private fun initPermissions() {
@@ -55,6 +67,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             map.initMyLocation()
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
