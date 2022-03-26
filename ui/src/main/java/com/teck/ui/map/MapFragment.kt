@@ -2,8 +2,11 @@ package com.teck.ui.map
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +19,11 @@ import com.teck.ui.map.libs.Map
 import com.teck.ui.map.libs.MapImpl
 import com.teck.ui.map.libs.ViewListener
 import com.teck.ui.map.libs.adapters.InfoMarkerGoogleAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 
 class MapFragment : Fragment(R.layout.fragment_map), ViewListener {
@@ -27,16 +34,25 @@ class MapFragment : Fragment(R.layout.fragment_map), ViewListener {
         InfoMarkerGoogleAdapter(this.requireContext())
     }
     private val map: Map by lazy {
-        MapImpl(childFragmentManager, infoMarkerGoogleAdapter, this)
+        MapImpl(
+            fragmentManager = childFragmentManager,
+            infoMarkerGoogleAdapter = infoMarkerGoogleAdapter,
+            viewListener = this,
+            geocoder = Geocoder(this.requireContext())
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initViewModel()
+        map.initUiSettings(R.id.google_map)
+        initPermissions()
+        map.onMapListener()
     }
 
     private fun initViewModel() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.takeData().collect {
+                Log.e("take data", it.toString())
                 showData(it)
             }
         }
@@ -45,7 +61,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ViewListener {
     private fun showData(places: List<Place>) {
         map.initUiSettings(R.id.google_map)
         map.addMarkers(places)
-        initPermissions()
         map.initListeners(places)
     }
 
@@ -69,7 +84,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ViewListener {
     }
 
     override fun saveData(place: Place) {
-        viewModel.saveData(place)
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            try {
+                viewModel.saveData(place)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(

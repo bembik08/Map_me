@@ -11,5 +11,5 @@ class MapViewModel(
     private val saveDataUseCase: InputUseCase<Place>
 ) : ViewModel() {
     fun takeData() = useCase.getData()
-    fun saveData(place: Place) = saveDataUseCase.saveData(place)
+    suspend fun saveData(place: Place) = saveDataUseCase.saveData(place)
 }
