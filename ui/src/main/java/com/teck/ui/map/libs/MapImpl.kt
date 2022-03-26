@@ -1,5 +1,6 @@
 package com.teck.ui.map.libs
 
+import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import androidx.annotation.IdRes
@@ -40,6 +41,7 @@ class MapImpl(
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun initMyLocation() {
         supportMapFragment?.getMapAsync { googleMap ->
             googleMap.isMyLocationEnabled = true
