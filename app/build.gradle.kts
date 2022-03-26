@@ -46,6 +46,7 @@ dependencies {
     implementation(project(Modules.MODULE_DATA))
     implementation(project(Modules.MODULE_DOMAIN))
     implementation(project(Modules.MODULE_UI))
+
     /** Koin **/
     implementation(Koin.CORE)
     implementation(Koin.ANDROID)
@@ -56,6 +57,11 @@ dependencies {
 
     /**Google Map**/
     implementation(GoogleMaps.googleMap)
+
+    /**Room**/
+    kapt(Room.COMPILER)
+    implementation(Room.RUN_TIME)
+    implementation(Room.KTX)
 
     implementation(Kotlin.CORE)
     implementation(Design.APPCOMPAT)
